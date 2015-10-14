@@ -74,6 +74,7 @@
 #include "rgb_macros.h"
 #include "selection.h"
 #include "streamview.h"
+#include "transpose_dialog.h"
 #include "patch_change_dialog.h"
 #include "verbose_cursor.h"
 #include "note.h"
@@ -2126,6 +2127,30 @@ MidiRegionView::delete_selection()
 
 	apply_diff ();
 	hide_verbose_cursor ();
+}
+
+void
+MidiRegionView::transpose_selection()
+{
+	if (_selection.empty()) {
+		return;
+	}
+
+	TransposeDialog d;
+	int const r = d.run ();
+	if (r != Gtk::RESPONSE_ACCEPT) {
+		return;
+	}
+
+	start_note_diff_command (_("transpose selection"));
+
+	for (Selection::iterator i = _selection.begin(); i != _selection.end(); ++i) {
+		if ((*i)->selected()) {
+			_model->transpose(_note_diff_command, (*i)->note(), d.semitones());
+		}
+	}
+
+	apply_diff ();
 }
 
 void

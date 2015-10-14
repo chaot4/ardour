@@ -193,6 +193,7 @@ public:
 	void   note_selected(NoteBase* ev, bool add, bool extend=false);
 	void   note_deselected(NoteBase* ev);
 	void   delete_selection();
+	void   transpose_selection();
 	void   delete_note (boost::shared_ptr<NoteType>);
 	size_t selection_size() { return _selection.size(); }
 	void   select_all_notes ();
